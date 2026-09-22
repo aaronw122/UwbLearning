@@ -17,7 +17,7 @@ y2 = np.exp( -((t/sigma2)**2) / 2 )
 plt.plot(t, y, marker='.')
 plt.ylabel("amplitude")
 plt.xlabel("time")
-
+plt.axis((-1, 3, 0, 2))
 #plt.plot(t, y2, marker='.')
 plt.ylabel("amplitude")
 plt.xlabel("time")
