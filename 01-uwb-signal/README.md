@@ -34,17 +34,24 @@ picoseconds, and therefore distance to centimeters.
 
 Write from scratch in Python (numpy + matplotlib):
 
-1. Generate a single pulse at a chosen sample rate (start ~ 10-20 GS/s so a 2 ns
-   pulse has plenty of samples). Gaussian is fine to start.
-2. FFT it. Plot magnitude spectrum in dB. Mark the -10 dB bandwidth.
-3. Vary pulse width: 0.5 ns, 2 ns, 10 ns, 100 ns. Plot time + spectrum side by side.
-   Watch bandwidth shrink as width grows.
-4. Modulate onto a carrier (multiply by cos(2*pi*f_c*t)). Show the spectrum
-   shifts to f_c but its width doesn't change.
-5. Generate a pulse *train* at a pulse repetition interval. Look at the spectrum:
-   it becomes lines spaced at the PRF. Understand why.
-6. Add two pulses separated by dt. Sweep dt downward. At what separation can
-   you no longer see two distinct pulses? Relate this to pulse width.
+Order is oscillation-first: see how a bump is assembled from oscillations before taking one apart with the FFT.
+
+1. One cosine at the carrier (8 GHz for channel 9). Fine time step (0.005 ns).
+2. Two cosines, 8.0 + 8.5 GHz. See the beat envelope. Overlay the analytic envelope 2*cos(2*pi*0.25*t). Change the second to 8.1, then 8.02: envelope slows as the frequencies get closer.
+3. Many cosines: sum N cosines spread evenly across 8 +/- 0.25 GHz, each with a
+   Gaussian weight. Start with 3, then 10, then 50. A single bump forms at t0.
+   Then narrow the spread to +/- 0.05 GHz and watch the bump widen. This is the
+   whole lesson: range of frequencies <-> width of bump.
+4. Gaussian envelope times carrier: y * cos(2*pi*8*t). A real UWB pulse. Compare
+   to step 3's result.
+5. FFT of step 4. Blob at 8 GHz, ~500 MHz wide. Mark the -10 dB bandwidth.
+6. FFT of the bare envelope y. Same blob at 0. The envelope owns the bandwidth;
+   the carrier only relocates it.
+7. Sweep sigma: 0.2, 0.85, 4, 40 ns. Time + spectrum side by side. Bandwidth
+   shrinks as width grows. Measure FWHM x bandwidth at each; roughly constant.
+8. Pulse train at a repetition interval. Spectrum becomes lines spaced at the PRF.
+9. Two pulses separated by dt. Sweep dt downward. At what separation can you no
+   longer see two distinct pulses? Relate this to pulse width.
 
 ## Break it
 
